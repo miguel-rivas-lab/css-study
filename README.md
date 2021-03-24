@@ -1,1 +1,1 @@
-# css-study-dev
+# CSS Study

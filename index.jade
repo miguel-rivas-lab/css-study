@@ -1,0 +1,128 @@
+- var pageTitle = "CSS Study"
+- var site = "Miguel Rivas"
+- var fbPreview = "https://miguel-rivas.github.io/img/pv_css_properties.png"
+- var icoPath = "https://miguel-rivas.github.io/img/favicon.png"
+- var icoBackground = "#D83434"
+- var description = "Properties of CSS"
+- var keyWords = "aguacate, aguacatekun, santo, domingo, republica, dominicana, css, properties, study"
+- var viewPort = false
+
+doctype html
+html(
+	ng-controller="css_ctr as ctr"
+	ng-style="{backgroundColor:ctr.color}"
+	ng-app="css_app"
+)
+	head
+		include jade/metatags
+		link(
+			rel="stylesheet"
+			href="css/css_py.css"
+		)
+		link(
+			rel="stylesheet"
+			href="css/sweetalert.css"
+		)
+		
+
+	body(
+		ng-style="{backgroundColor:ctr.color}"
+		ng-init="hideCover = 1"
+	)
+		#texture
+		a#logo(href="../../"): img(src="img/logo2.png", alt="aguacatekun")
+		aside#cover(ng-show="!hideCover")
+
+		header CSS
+			#vs
+				#sel {{ ctr.txt }}
+				a#op1(
+					href="javascript:void(0)"
+					ng-click="ctr.filter_vs('all')"
+				) *
+				a#op2(
+					href="javascript:void(0)"
+					ng-click="ctr.filter_vs('1')"
+				) 1
+				a#op3(
+					href="javascript:void(0)"
+					ng-click="ctr.filter_vs('2.1')"
+				) 2.1
+				a#op4(
+					href="javascript:void(0)"
+					ng-click="ctr.filter_vs('3')"
+				) 3
+				input#query(
+					type="text"
+					placeholder="-- filterBy --"
+					ng-model="search.name"
+				)
+
+		main
+			article.info( 
+				ng-repeat="data in ctr.property | filter:search:strict | orderBy:['+dependency','+name']" 
+				ng-show="ctr.is_check( '{{ data.version }}' )"
+				ng-class="{'selected':showDetails}"
+			)
+				a.toggle(
+					href="javascript:void(0)"
+					ng-click="showDetails =! showDetails"
+				)
+					strong &#xea43;
+					h3 {{ data.version }}
+					h1 {{ data.dependency }}
+					h2 {{ data.name }}
+
+				a.addLi(
+					href="javascript:void(0)"
+					ng-click="ctr.addToArray( data.version + ' : ' + data.dependency + data.name )"
+				) +
+				.more(ng-show="showDetails")
+					ul
+						li(ng-show="data.initial") Initial : {{ data.initial }}
+						li(ng-show="data.values.length") Values :
+							em(ng-repeat="values in data.values") {{ values }}
+						li(ng-show="data.inherit") Inherit : {{ data.inherit }}
+						li(ng-show="data.complement.length") complement :
+							em(ng-repeat="complement in data.complement") {{ complement }}
+						li(ng-show="data.applyTo") Apply To : {{ data.applyTo }}
+						li(ng-show="data.description") {{ data.description }}
+
+		footer(ng-class="{'show_list':openStudy}")
+			a.btn(
+				href="javascript:void(0)"
+				ng-click="openStudy =! openStudy"
+			)
+				strong &#xe9bb;
+				|  Open Study List - 
+			a.btn(
+				href="javascript:void(0)"
+				ng-click="ctr.clearStudyList()"
+			)
+				strong &#xe9ac;
+				|  Wipe the board
+			.board
+				ul
+					li(
+						ng-repeat="study in ctr.study"
+						ng-class="{'doneLi':study.check}"
+					)
+						a(
+							href="javascript:void(0)"
+							ng-click="ctr.checkList( $index )"
+						) {{ study.data }}
+
+		script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js")
+		script(src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular-cookies.min.js")
+		script(
+			src="js/sweetalert.min.js"
+			type="text/javascript"
+		)
+		script(
+			src="js/css_py.js"
+			type="text/javascript"
+		)
+		script(
+			src="js/css_py_db.js"
+			type="text/javascript"
+		)
